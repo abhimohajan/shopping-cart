@@ -16,7 +16,7 @@
       <div class="container">
          <div class="cart">
             <div class="col-md-12 col-lg-10 mx-auto">
-               <div class="cart-item">
+               <div class="cart-item" id="phone">
                   <div class="row">
                      <div class="col-md-7 center-item">
                         <img src="images/product-1.png" alt="">
@@ -25,17 +25,17 @@
 
                      <div class="col-md-5 center-item">
                         <div class="input-group number-spinner">
-                           <button class="btn btn-default"><i class="fas fa-minus"></i></button>
-                           <input type="text" class="form-control text-center" value="1">
-                           <button class="btn btn-default"><i class="fas fa-plus"></i></button>
+                           <button id="phoneMinusBtn" class="btn btn-default"><i class="fas fa-minus"></i></button>
+                           <input id="phoneInputValue" type="text" class="form-control text-center" value="1">
+                           <button id="phonePlusBtn" class="btn btn-default"><i class="fas fa-plus"></i></button>
                         </div>
-                        <h5>$1219</h5>
+                        <h5>$<span id="phonePrice">1219</span></h5>
                         <img src="images/remove.png" alt="" class="remove-item">
                      </div>
                   </div>
                </div>
 
-               <div class="cart-item">
+               <div class="cart-item" id="case">
                   <div class="row">
                      <div class="col-md-7 center-item mx-auto">
                         <img src="images/product-2.png" alt="">
@@ -43,12 +43,12 @@
                      </div>
                      <div class="col-md-5 center-item">
                         <div class="input-group number-spinner">
-                           <button class="btn btn-default"><i class="fas fa-minus"></i></button>
-                           <input type="text" class="form-control text-center" value="1">
-                           <button class="btn btn-default"><i class="fas fa-plus"></i></button>
+                           <button id="caseMinusBtn" class="btn btn-default"><i class="fas fa-minus"></i></button>
+                           <input id="caseInputValue" id="" type="text" class="form-control text-center" value="1">
+                           <button id="casePlusBtn" class="btn btn-default"><i class="fas fa-plus"></i></button>
 
                         </div>
-                        <h5>$59</h5>
+                        <h5>$ <span id="casePrice"></span> 59</h5>
                         <img src="images/remove.png" alt="" class="remove-item">
                      </div>
                   </div>
@@ -64,9 +64,9 @@
                      </div>
 
                      <div class="col-md-4 status">
-                        <h5>$1,278</h5>
-                        <h5>$0</h5>
-                        <h5>$1,278</h5>
+                        <h5>$ <span id="subtotal">0</span></h5>
+                        <h5>$ <span id="tax"></span>0</h5>
+                        <h5>$ <span id="total"></span>0</h5>
                      </div>
                   </div>
                </div>
@@ -77,6 +77,60 @@
          </div>
       </div>
    </section>
+
+   <script>
+         
+    var subtotalPrice = document.getElementById("subtotal").innerText;
+    var subtotal = parseFloat(subtotalPrice);
+   
+   function count(plusKeyId, minusKeyId, productId, itemPriceId){
+
+         // button 
+         const phoneMinusBtn = document.getElementById(minusKeyId);
+         const phonePlusBtn = document.getElementById(plusKeyId);
+
+         // parse value
+         var inputValue = document.getElementById(productId).value;
+         var productPrice = document.getElementById(itemPriceId).innerText;
+         var productValue = parseInt(inputValue);
+         var price = parseFloat(productPrice);
+
+         //minus button event handling
+         phoneMinusBtn.addEventListener('click', function(){
+            if(inputValue > 1){
+               inputValue = inputValue -1;
+               subtotal=subtotal - price;
+               calc(inputValue, subtotal, productId, itemPriceId)
+            }
+         });
+         
+         
+         //plus button event handling
+         phonePlusBtn.addEventListener('click', function(){
+               inputValue = inputValue +1;
+               subtotal=subtotal + price;
+               calc(inputValue, subtotal, productId, itemPriceId)
+         });
+      
+         //calculation function
+         function calc(inputValue, subtotal, productId, itemPriceId){
+            var totalPrice = inputValue * price;
+            var tax= 2 * subtotal / 100;
+            var total= subtotal + tax;
+            document.getElementById(productId).value = inputValue;
+            document.getElementById(itemPriceId).innerText = totalPrice;
+            document.getElementById('subtotal').innerText= subtotal;
+            document.getElementById('tax').innerText= tax;
+            document.getElementById('total').innerText= total;
+         }
+   }
+
+     //calling method
+     count('phonePlusBtn', 'phoneMinusBtn', 'phoneInputValue', 'phonePrice');
+      count('casePlusBtn', 'caseMinusBtn', 'caseInputValue', 'casePrice');
+
+    
+   </script>
 </body>
 
 </html>
